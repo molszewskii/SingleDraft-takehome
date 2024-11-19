@@ -7,7 +7,7 @@ import { useStore } from "../store";
 type CardProps = {
   id: ListItem["id"];
   title: ListItem["title"];
-  description: ListItem["description"];
+  description?: ListItem["description"];
 };
 
 export const Card: FC<CardProps> = ({id, title, description }) => {
