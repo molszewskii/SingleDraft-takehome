@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { ListItem } from "../api/getListData";
 import { DeleteButton, ExpandButton } from "./Buttons";
 import { ChevronDownIcon, ChevronUpIcon } from "./icons";
@@ -12,7 +12,7 @@ type CardProps = {
 
 export const Card: FC<CardProps> = ({id, title, description }) => {
   const {expandedCards, addExpandedCard, removeExpandedCard, addDeletedCard} = useStore();
-
+  const [isDeleting, setIsDeleting] = useState(false);
   const isExpanded = expandedCards.has(id);
 
   const toggleExpand = () =>{
@@ -24,10 +24,13 @@ export const Card: FC<CardProps> = ({id, title, description }) => {
   }
 
   const deleteCard = () =>{
-    addDeletedCard(id);
+    setIsDeleting(true); 
+    setTimeout(() => {
+      addDeletedCard(id); 
+    }, 1000);
   }
   return (
-    <div className="border border-black px-2 py-1.5">
+    <div className={`border border-black px-2 py-1.5 hover:scale-105 ${isDeleting ? "animate-moveToDeleted" : ""}`}>
       <div className="flex justify-between mb-0.5">
         <h1 className="font-medium">{title}</h1>
         <div className="flex">
@@ -37,7 +40,11 @@ export const Card: FC<CardProps> = ({id, title, description }) => {
           <DeleteButton onClick={deleteCard}/>
         </div>
       </div>
-      {isExpanded && <p className="text-sm">{description}</p>}
+      <div
+        className={`overflow-hidden ${isExpanded ? "animate-slideDown" : "animate-slideUp"}`}
+      >
+        {isExpanded && <p className="text-sm">{description}</p>}
+      </div>
       
     </div>
   );
