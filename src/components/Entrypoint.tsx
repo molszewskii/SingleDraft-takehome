@@ -28,7 +28,7 @@ export const Entrypoint = () => {
         <h1 className="mb-1 font-medium text-lg">My Awesome List ({visibleCards.length})</h1>
         <div className="flex flex-col gap-y-3">
           {visibleCards.map((card) => (
-            <Card key={card.id} title={card.title} description={card.description} />
+            <Card key={card.id} id={card.id} title={card.title} description={card.description} />
           ))}
         </div>
       </div>
