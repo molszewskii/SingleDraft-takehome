@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { ListItem, useGetListData } from "../api/getListData";
+import { DeletedListItem, ListItem, useGetListData } from "../api/getListData";
 import { Card } from "./List";
 import { Spinner } from "./Spinner";
+import { useStore } from "../store";
 
 export const Entrypoint = () => {
   const [visibleCards, setVisibleCards] = useState<ListItem[]>([]);
   const listQuery = useGetListData();
+  const {deletedCards} = useStore();
 
   // TOOD
-  // const deletedCards: DeletedListItem[] = [];
+  const deletedCardsData: DeletedListItem[] = listQuery.data?.filter((item)=> deletedCards.has(item.id)).map(({id,title,isVisible})=>({id,title,isVisible})) ?? [];
 
   useEffect(() => {
     if (listQuery.isLoading) {
@@ -34,7 +36,7 @@ export const Entrypoint = () => {
       </div>
       <div className="w-full max-w-xl">
         <div className="flex items-center justify-between">
-          <h1 className="mb-1 font-medium text-lg">Deleted Cards (0)</h1>
+          <h1 className="mb-1 font-medium text-lg">Deleted Cards ({deletedCardsData.length})</h1>
           <button
             disabled
             className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
