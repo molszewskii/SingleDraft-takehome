@@ -8,7 +8,7 @@ export const Entrypoint = () => {
   const [visibleCards, setVisibleCards] = useState<ListItem[]>([]);
   const listQuery = useGetListData();
   const {deletedCards} = useStore();
-
+  const [revealDeletedCards, setRevealDeletedCards] = useState(false);
   // TOOD
   const deletedCardsData: DeletedListItem[] = listQuery.data?.filter((item)=> deletedCards.has(item.id)).map(({id,title,isVisible})=>({id,title,isVisible})) ?? [];
 
@@ -38,17 +38,19 @@ export const Entrypoint = () => {
         <div className="flex items-center justify-between">
           <h1 className="mb-1 font-medium text-lg">Deleted Cards ({deletedCardsData.length})</h1>
           <button
-            disabled
             className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
+            onClick={() => setRevealDeletedCards((prev)=>!prev)}
           >
             Reveal
           </button>
         </div>
-        <div className="flex flex-col gap-y-3">
-          {/* {deletedCards.map((card) => (
-            <Card key={card.id} card={card} />
-          ))} */}
-        </div>
+          {revealDeletedCards && (
+             <div className="flex flex-col gap-y-3">
+            {deletedCardsData.map((card) => (
+              <Card key={card.id} id={card.id} title={card.title} />
+            ))}
+            </div>
+          )}
       </div>
     </div>
   );
