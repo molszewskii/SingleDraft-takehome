@@ -23,6 +23,9 @@ export const Card: FC<CardProps> = ({id, title, description }) => {
     }
   }
 
+  const deleteCard = () =>{
+    addDeletedCard(id);
+  }
   return (
     <div className="border border-black px-2 py-1.5">
       <div className="flex justify-between mb-0.5">
@@ -31,7 +34,7 @@ export const Card: FC<CardProps> = ({id, title, description }) => {
           <ExpandButton onClick={toggleExpand}>
             {isExpanded ? <ChevronDownIcon/> : <ChevronUpIcon />}
           </ExpandButton>
-          <DeleteButton />
+          <DeleteButton onClick={deleteCard}/>
         </div>
       </div>
       {isExpanded && <p className="text-sm">{description}</p>}
