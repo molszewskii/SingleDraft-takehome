@@ -8,4 +8,21 @@ type CardState ={
     addDeletedCard: (id: number) => void;
 }
 
-export const useStore = create<State & Actions>((set) => ({}));
+export const useStore = create<CardState>((set) => ({
+    expandedCards: new Set(),
+    deletedCards: new Set(),
+
+    addExpandedCard: (id) => set((state)=>({
+        expandedCards: new Set(state.expandedCards).add(id),
+    })),
+
+    removeExpandedCard: (id) => set((state)=>{
+        const updated = new Set(state.expandedCards);
+        updated.delete(id);
+        return { expandedCards: updated};
+    }),
+
+    addDeletedCard: (id) => set((state)=>({
+        deletedCards: new Set(state.deletedCards).add(id),
+    })),
+}));
