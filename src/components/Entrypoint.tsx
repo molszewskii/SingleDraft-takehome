@@ -16,9 +16,12 @@ export const Entrypoint = () => {
     if (listQuery.isLoading) {
       return;
     }
-
-    setVisibleCards(listQuery.data?.filter((item) => item.isVisible) ?? []);
-  }, [listQuery.data, listQuery.isLoading]);
+    const filterVisibleCards = listQuery.data?.filter(
+      (item)=> item.isVisible && !deletedCards.has(item.id)
+    )
+    
+    setVisibleCards(filterVisibleCards ?? []);
+  }, [listQuery.data, listQuery.isLoading, deletedCards]);
 
   if (listQuery.isLoading) {
     return <Spinner />;
