@@ -12,6 +12,10 @@ export const Entrypoint = () => {
   // TOOD
   const deletedCardsData: DeletedListItem[] = listQuery.data?.filter((item)=> deletedCards.has(item.id)).map(({id,title,isVisible})=>({id,title,isVisible})) ?? [];
 
+  const handleRefresh = () =>{
+    listQuery.refetch();
+  }
+
   useEffect(() => {
     if (listQuery.isLoading) {
       return;
@@ -30,7 +34,15 @@ export const Entrypoint = () => {
   return (
     <div className="flex gap-x-16">
       <div className="w-full max-w-xl">
-        <h1 className="mb-1 font-medium text-lg">My Awesome List ({visibleCards.length})</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="mb-1 font-medium text-lg">My Awesome List ({visibleCards.length})</h1>
+          <button
+            className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
+            onClick={handleRefresh}
+          >
+            Refresh
+          </button>
+        </div>
         <div className="flex flex-col gap-y-3">
           {visibleCards.map((card) => (
             <Card key={card.id} id={card.id} title={card.title} description={card.description} />
